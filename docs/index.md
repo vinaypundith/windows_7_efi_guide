@@ -1,6 +1,4 @@
-## Welcome to GitHub Pages
-
-### Windows 7 (and possibly Vista, Server 2008 and Server 2008 R2) EFI-mode installation instructions
+## Windows 7 (and possibly Vista, Server 2008 and Server 2008 R2) EFI-mode installation instructions
 
 Introduction (Skip reading this if you know what you're doing.) :
 There are two basic protocol standards that most personal computers use to run the process of loading the operating system. One is called "Legacy BIOS boot mode", and is what was the de facto standard since the 1980s and MS-DOS/ the earliest of Windows versions. The other one, introduced in the late 2000s and which has been the default protocol used in almost all computers manufactured since 2012, is the "EFI/UEFI boot mode". These two differ in two fundamental ways: the way in which the software loads the drivers necessary for interaction with the computer's various hardware features, and the style of partitioning of the computer's internal hard drive that they use. Legacy BIOS boot mode needs the hard drive formatted to the Master Boot Record (MBR) "partition table format" (partition table format being the way in which file systems on the drive are defined), which UEFI boot mode uses the hard drive formatted to the newer GUID Partition Table (GPT) partition table format. GPT has multiple advantages over MBR, including the capacity for drives larger than 2 terabytes, the ability to have more than 4 "partitions" on the drive, and less vulnerability to viruses that install themselves to the "boot sector", which is the section of the hard drive where the file systems are defined.  And the UEFI boot mode itself has multiple advantages over legacy BIOS boot mode, including better power management on some computers. For these reasons, UEFI boot mode has now become the default mode used by almost all computers made since 2012, with systems from large companies like Dell and HP having this capability in computers made since 2010-11. Apple Macintosh computers have had this feature since the 2009 year models. As for operating systems, it is supported by Windows versions 8 and newer, Apple's MacOS, and most Linux variants.
@@ -18,6 +16,8 @@ Materials Needed:
 
 - Prerequisite Step :  Make sure your target computer's hard drive is either blank (or has no important data or other operating systems on it, so that you can make it blank in the Windows installer), or is formatted to have a GPT style partition table. You can use tools like AOMEI Partition Assistant in Windows or Linux's built in Disks tool to find out. If you already have another operating system installed on the computer in UEFI mode (like Apple MacOS, Windows 8.x, 10 or 11, or Linux) then partitioning will already be in the correct format. If the drive is blank, then the Windows installer will automatically set the proper partition table. If the hard disk has data that you want to preserve, but is formatted to MBR partition table style instead of GPT, you will need to convert it to GPT first - there are tools available to do this (my personal favorite being AOMEI Partition Assistant, on Windows, or gdisk on Linux). Once you convert it (or if it already has a UEFI mode operating system on it), make sure there is enough free space on the hard drive to install your new setup of Windows (the minimum is about 40-50GB). You may have to resize/shrink existing partitions to achieve this.
 
+Installation Procedure:
+
 - Step 1: Get an installer ISO of the Windows version you want to install. Must be 64 bit; the 32 bit version does not support UEFI (afaik). No Windows 7 Starter, sadly, for this reason.
 
 - Step 2: (You'll need access to another Windows computer for this step, for now until a different tool is discovered) Download Rufus from https://rufus.ie/en/ and open the application
@@ -30,9 +30,7 @@ Materials Needed:
 
 - Step 5.1: If you are installing this to a 2009-2010 year model Apple Macintosh computer with an NVidia GeForce 9400M, 9600M, or 320M graphics processor, additional steps apply in order for UEFI mode Windows to boot properly. See end of this post for details.
 
-- Step 6: Restart the target computer with the USB drive plugged in. Open the computer's boot options menu while it's starting back up and select the USB drive that you just put files on.
-
-Press Enter at the yellow text screen if it asks you, in order to proceed.
+- Step 6: Restart the target computer with the USB drive plugged in. Open the computer's boot options menu while it's starting back up and select the USB drive that you just put files on. Press Enter at the yellow text screen if it asks you, in order to proceed.
 
 - Step 7: Go through the Windows installer as normal. This is where the GPT partition table style requirement applies - if you're installing Windows 7 as the only OS on the computer's hard drive and there are no files on the drive you want to save, then just delete all the existing partitions on the drive when the installer prompts you for partitioning and install Windows to "unallocated space" and it will take care of the partitioning for you. If you already have another operating system installed on the computer in UEFI mode or converted the drive in the prerequisite step, then partitioning will already be in the correct format - just select a blank partition (if you created one) or Unallocated Space and proceed. 
 
