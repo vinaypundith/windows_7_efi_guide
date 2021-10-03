@@ -1,37 +1,51 @@
 ## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/vinaypundith/vinaypundith.github.io/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+### Windows 7 (and possibly Vista, Server 2008 and Server 2008 R2) EFI-mode installation instructions
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Introduction (Skip reading this if you know what you're doing.) :
+There are two basic protocol standards that most personal computers use to run the process of loading the operating system. One is called "Legacy BIOS boot mode", and is what was the de facto standard since the 1980s and MS-DOS/ the earliest of Windows versions. The other one, introduced in the late 2000s and which has been the default protocol used in almost all computers manufactured since 2012, is the "EFI/UEFI boot mode". These two differ in two fundamental ways: the way in which the software loads the drivers necessary for interaction with the computer's various hardware features, and the style of partitioning of the computer's internal hard drive that they use. Legacy BIOS boot mode needs the hard drive formatted to the Master Boot Record (MBR) "partition table format" (partition table format being the way in which file systems on the drive are defined), which UEFI boot mode uses the hard drive formatted to the newer GUID Partition Table (GPT) partition table format. GPT has multiple advantages over MBR, including the capacity for drives larger than 2 terabytes, the ability to have more than 4 "partitions" on the drive, and less vulnerability to viruses that install themselves to the "boot sector", which is the section of the hard drive where the file systems are defined.  And the UEFI boot mode itself has multiple advantages over legacy BIOS boot mode, including better power management on some computers. For these reasons, UEFI boot mode has now become the default mode used by almost all computers made since 2012, with systems from large companies like Dell and HP having this capability in computers made since 2010-11. Apple Macintosh computers have had this feature since the 2009 year models. As for operating systems, it is supported by Windows versions 8 and newer, Apple's MacOS, and most Linux variants.
 
-### Markdown
+Windows 7, however, released in 2009, has only partial support for it - the operating system itself is capable of using UEFI boot mode, but the operating system's bootloader (the small set of files responsible for loading the operating system when the computer is started) does not, due to the way in which it loads the video controller and display drivers. But there are reasons why you may need to install this version of Windows in UEFI boot mode - the most common of which being to run it as a secondary operating system on a computer already using a different operating system installed using UEFI boot mode (as you can't have an OS that uses UEFI mode and an OS that uses legacy BIOS mode together on the same hard drive). 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+That is what this guide is for - installing Windows 7 in UEFI boot mode. To fix the issue that the Windows 7 bootloader has with UEFI boot mode, there is a compatibility layer software called "UEFISeven" that is available that adapts the Windows 7 bootloader to something that is fully UEFI boot mode capable. This guide shows you how to install and use the UEFISeven compatibility bootloader tool. UEFISeven is what is known as a "chainloader" - which is a software that is loaded by the computer first instead of the standard Windows bootloader, that applies certain patches before then loading the same standard Windows bootloader itself. It does not modify the Windows bootloader itself or any of the Windows system files - it is loaded by the computer before any of the operating system is loaded and applies its patches at that level, leaving the operating system itself untouched. This is the best way of applying any operating system patches, as against modifying the operating system's code itself, since when you do that you introduce more places and times when something can error out and stop working. 
 
-```markdown
-Syntax highlighted code block
+Let's get started, enough talk already.
+Materials Needed:
+- either another Windows computer or another functional Windows version on the computer you're installing Windows 7 on
+- some form of rewritable media 4 or more GB in size - can be a flash drive, hard drive on a USB tail, or whatever - just no DVDs since you need write access to it and DVDs are read-only after the first write (maybe DVD+RW disks would work? IDK)
+- some basic computer disk partitioning and file swapping skills, and patience
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
+- Prerequisite Step :  Make sure your target computer's hard drive is either blank (or has no important data or other operating systems on it, so that you can make it blank in the Windows installer), or is formatted to have a GPT style partition table. You can use tools like AOMEI Partition Assistant in Windows or Linux's built in Disks tool to find out. If you already have another operating system installed on the computer in UEFI mode (like Apple MacOS, Windows 8.x, 10 or 11, or Linux) then partitioning will already be in the correct format. If the drive is blank, then the Windows installer will automatically set the proper partition table. If the hard disk has data that you want to preserve, but is formatted to MBR partition table style instead of GPT, you will need to convert it to GPT first - there are tools available to do this (my personal favorite being AOMEI Partition Assistant, on Windows, or gdisk on Linux). Once you convert it (or if it already has a UEFI mode operating system on it), make sure there is enough free space on the hard drive to install your new setup of Windows (the minimum is about 40-50GB). You may have to resize/shrink existing partitions to achieve this.
 
-1. Numbered
-2. List
+- Step 1: Get an installer ISO of the Windows version you want to install. Must be 64 bit; the 32 bit version does not support UEFI (afaik). No Windows 7 Starter, sadly, for this reason.
 
-**Bold** and _Italic_ and `Code` text
+- Step 2: (You'll need access to another Windows computer for this step, for now until a different tool is discovered) Download Rufus from https://rufus.ie/en/ and open the application
 
-[Link](url) and ![Image](src)
-```
+- Step 3: Use Rufus to write the installer ISO to what will be your installation media (USB or whatever you got from earlier), by selecting your Windows ISO image and the right disk to put it on. If you're using a hard drive on a USB tail then you have to select "List USB Hard Drives" under "Show advanced drive properties". Make sure that "Partition Scheme" is set to GPT and Target System is set to UEFI (without CSM).
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+- Step 4: Download the UEFISeven software from https://github.com/manatails/uefiseven/releases/download/1.24/UefiSeven_1.24.zip and extract the zip archive
 
-### Jekyll Themes
+- Step 5: Install the UEFISeven bootloader patch. Navigate to your newly made Windows installer in a file manager, and go to the EFI\Boot folder. Here, you need to find the file called "bootx64.efi", and rename it to "bootx64.original.efi". Now go back to the folder where you extracted the UEFI7 archive, copy the bootx64.efi file from there, and paste it into the folder on the installer drive where you just did the file rename. If you did it right, you should have a 600-ish KB file called bootx64.original.efi and a sub 100KB file called bootx64.efi in the \EFI\Boot folder on the installer drive. You can see here how the concept of a chainloader works - by putting itself (UEFISeven) in place of the original Windows bootloader (which was the bootx64.efi file that you renamed to .original...) so that it is loaded first, runs its patching code, and then hands over control to the original Windows bootloader, which is now at a new "location" - the renamed file.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/vinaypundith/vinaypundith.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+- Step 5.1: If you are installing this to a 2009-2010 year model Apple Macintosh computer with an NVidia GeForce 9400M, 9600M, or 320M graphics processor, additional steps apply in order for UEFI mode Windows to boot properly. See end of this post for details.
 
-### Support or Contact
+- Step 6: Restart the target computer with the USB drive plugged in. Open the computer's boot options menu while it's starting back up and select the USB drive that you just put files on.
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Press Enter at the yellow text screen if it asks you, in order to proceed.
+
+- Step 7: Go through the Windows installer as normal. This is where the GPT partition table style requirement applies - if you're installing Windows 7 as the only OS on the computer's hard drive and there are no files on the drive you want to save, then just delete all the existing partitions on the drive when the installer prompts you for partitioning and install Windows to "unallocated space" and it will take care of the partitioning for you. If you already have another operating system installed on the computer in UEFI mode or converted the drive in the prerequisite step, then partitioning will already be in the correct format - just select a blank partition (if you created one) or Unallocated Space and proceed. 
+
+- Step 8: wait for the Windows installer to do its thing. The Windows installer has several stages, with a reboot in between them - but in this case, after the first reboot, Windows 7 won't be able to bootup to complete the installation - since when we installed the UEFISeven chainloader in the earlier step, we only applied the patch to the bootloader on the installer USB, not the computer's internal hard drive. So when your computer reboots to finish the installation, it can't boot Windows 7, since it switches to using the bootloader on the internal hard drive instead of the installer drive where we applied the patch.  
+
+- Step 9: this is where you need either the computer to be able to boot another operating system or the ability to remove the hard drive from the computer and access it from another computer. Do one of those - reboot the computer to another working operating system, or remove the hard drive and plug it into another working computer. You need to get access to what is called the "EFI partition" on the hard drive, which is where the operating system bootloaders for operating systems installed in EFI mode are stored. In Linux, this can be done by using the Disks tool and "mounting" the EFI partition, which is the small partition at the very beginning of the drive. In Windows, you will need a 3rd party tool to do this (I believe Explorer++ is one such tool). In Apple MacOS, you can use either the terminal command line or a third party tool to do this.
+
+- Step 10: Once you have access to that, you have to apply the UEFISeven bootloader patch. To do so, navigate to the Boot folder on the EFI partition, then the Microsoft folder under that. Find the file called "bootmgfw.efi" and rename it to "bootmgfw.original.efi". Now take the bootx64.efi file from the UEFISeven download you had for Step 5 and copy it to that Microsoft folder, and rename it to "bootmgfw.efi". This step is a repeat of Step 5, just on a different drive and with slightly different file names.
+
+- Step 10a: If you're doing this on an Apple Macintosh computer, additional steps may apply. See bottom of this post for those steps.
+
+- Step 11: Reboot the target computer (put the hard drive back in if you removed it). Boot to the internal hard drive (should be the default), you don't need the installer disk (USB or whatever) anymore. If you already had a version of Windows on the hard drive, you will be presented with a selection screen to pick that version or Windows 7. Pick Windows 7 so that it can finish the installation process. 
+
+- Step 12: Go through the Windows 7 installation process' final stages as you would do on any normal computer. Since UEFI boot mode uses a different method of the computer loading hardware device driver software, depending on your computer's hardware you may find that some hardware features don't work properly or work in an odd way. Since this is a hardware-specific issue, I can't explain what to do here - but there are guides available on the internet; just do a search. This is especially true of Apple Macintosh computers - but for those, tools are available that automatically modify the hardware driver configuration so that it works properly with Windows in UEFI mode.
+
+Congratulations, you are done!
