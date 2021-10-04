@@ -49,6 +49,7 @@ That is what this guide is for - installing Windows 7 in UEFI boot mode. To fix 
 Congratulations, you are done!
 
 Written by Vinay, 10/02/2021
+
 Also credit to Andrew Howe @Howeitworks for his help in figuring this out.
 You can check out his website at http://howeitworks.com - he has written tools for unbootable computer recovery and Windows driver installation on Apple Macs.
 
