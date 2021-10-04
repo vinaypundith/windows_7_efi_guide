@@ -50,7 +50,7 @@ Congratulations, you are done!
 
 Written by Vinay, 10/02/2021
 
-Also credit to Andrew Howe @Howeitworks for his help in figuring this out.
+Also credit to Andrew Howe @Howeitworks for his big role in figuring this out.
 You can check out his website at http://howeitworks.com - he has written tools for unbootable computer recovery and Windows driver installation on Apple Macs.
 
 If you have questions about this process, if you have Discord you can join this group and ask us: https://discord.gg/YkAPQZzwH4
