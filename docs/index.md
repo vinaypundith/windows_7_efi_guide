@@ -47,3 +47,9 @@ That is what this guide is for - installing Windows 7 in UEFI boot mode. To fix 
 - **Step 12**: Go through the Windows 7 installation process' final stages as you would do on any normal computer. Since UEFI boot mode uses a different method of the computer loading hardware device driver software, depending on your computer's hardware you may find that some hardware features don't work properly or work in an odd way. Since this is a hardware-specific issue, I can't explain what to do here - but there are guides available on the internet; just do a search. This is especially true of Apple Macintosh computers - but for those, tools are available that automatically modify the hardware driver configuration so that it works properly with Windows in UEFI mode.
 
 Congratulations, you are done!
+
+Written by Vinay, 10/02/2021
+Also credit to Andrew Howe @Howeitworks for his help in figuring this out.
+You can check out his website at http://howeitworks.com - he has written tools for unbootable computer recovery and Windows driver installation on Apple Macs.
+
+If you have questions about this process, if you have Discord you can join this group and ask us: https://discord.gg/YkAPQZzwH4
