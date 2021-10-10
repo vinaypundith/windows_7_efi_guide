@@ -49,8 +49,9 @@ That is what this guide is for - installing Windows 7 in UEFI boot mode. To fix 
 Congratulations, you are done!
 
 Written by Vinay, 10/02/2021
+All credit for this method goes to Pierre Kim / github user @manatails, who developed the UEFISeven application itself. I have no affiliation with him and no role in the development of UEFISeven. You can check out his website at https://manatails.net/blog/ - he has also written several other tech guides on various topics.
 
-Also credit to Andrew Howe @Howeitworks for his big role in figuring this out.
+Also credit to Andrew Howe @Howeitworks for his role in figuring out how to get it to work properly.
 You can check out his website at http://howeitworks.com - he has written tools for unbootable computer recovery and Windows driver installation on Apple Macs.
 
 If you have questions about this process, if you have Discord you can join this group and ask us: https://discord.gg/YkAPQZzwH4
